@@ -25,16 +25,16 @@ public class MainActivity extends AppCompatActivity {
             Log.i("jeff","onSensorChanged event="+event.values.toString());
             switch (event.sensor.getName()){
                 case "Gravity":
-                    gSensor.setText("x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
+                    gSensor.setText("Gravity x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
                     break;
                 case "Orientation":
-                    oSensor.setText("x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
+                    oSensor.setText("Orientation x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
                     break;
                 case "BMI120 Accelerometer":
-                    mSensor.setText("x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
+                    mSensor.setText("Accelerometer x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
                     break;
                 case "BMI120 Gyroscope":
-                    gySensor.setText("x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
+                    gySensor.setText("Gyroscope x="+event.values[0]+",y="+event.values[1]+",z="+event.values[2]);
                     break;
             }
         }
@@ -45,16 +45,16 @@ public class MainActivity extends AppCompatActivity {
             Log.i("jeff","onAccuracyChanged sensor="+sensor.getName()+",accuracy="+accuracy);
             switch (mySensor.getName()){
                 case "Gravity":
-                    dis.setText("重力传感器:"+mySensor.getName()+",accuracy="+accuracy);
+                    dis.setText("Gravity sensor:"+mySensor.getName()+",accuracy="+accuracy);
                     break;
                 case "Orientation":
-                    ois.setText("方向传感器o-sensor:"+mySensor.getName()+",accuracy="+accuracy);
+                    ois.setText("Direction sensor:"+mySensor.getName()+",accuracy="+accuracy);
                     break;
                 case "BMI120 Accelerometer":
-                    mis.setText("加速度传感器:"+mySensor.getName()+",accuracy="+accuracy);
+                    mis.setText("Acceleration sensor:"+mySensor.getName()+",accuracy="+accuracy);
                     break;
                 case "BMI120 Gyroscope":
-                    gyis.setText("陀螺仪传感器gyro-sensor:"+mySensor.getName()+",accuracy="+accuracy);
+                    gyis.setText("Gyroscope sensor:"+mySensor.getName()+",accuracy="+accuracy);
                     break;
             }
         }
