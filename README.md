@@ -1,3 +1,4 @@
 # SenSorManager
-This is a SenSorManager demo,contains gravity,orientation,accelerometer and so on.
-里面包含一个小球随手机而移动的demo。
+This is a demo to display Android SensorManager values such as gravity,orientation,accelerometer and so on.
+
+It is a slightly modernized version of https://github.com/1994jeff/SenSorManager

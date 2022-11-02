@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SensorManagerDemo</string>
+    <string name="direction_sensor">Direction sensor: %1$s, accuracy: %2$d</string>
+    <string name="gravity_sensor">Gravity sensor: %1$s, accuracy: %2$d</string>
+    <string name="acceleration_sensor">Acceleration sensor: %1$s, accuracy: %2$d</string>
+    <string name="gyroscope_sensor">Gyroscope sensor: %1$s, accuracy: %2$d</string>
+    <string name="gravity">Gravity x= %1$f, y=%2$f, z=%3$f</string>
+    <string name="orientation">Orientation x= %1$f, y=%2$f, z=%3$f</string>
+    <string name="accelerometer">Accelerometer x= %1$f, y=%2$f, z=%3$f</string>
+    <string name="gyroscope">Gyroscope x= %1$f, y=%2$f, z=%3$f</string>
 </resources>
