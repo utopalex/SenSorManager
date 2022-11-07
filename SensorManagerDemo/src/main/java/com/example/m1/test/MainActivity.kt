@@ -5,19 +5,31 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.icu.util.TimeUnit
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
+import kotlin.time.Duration
 
 class MainActivity : AppCompatActivity() {
 
     private var sensorManager: SensorManager? = null
 
+    private val sensorCounterMap = hashMapOf<Int, UInt>()
+    private var lastUpdate = System.currentTimeMillis()
+
+    private fun updateSensorCounter(sensorType: Int) {
+        sensorCounterMap[sensorType] = sensorCounterMap.getOrDefault(sensorType, 0u).inc()
+    }
+
     private var eventListener: SensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
-            Log.i("jeff", "onSensorChanged event=" + Arrays.toString(event.values))
             when (event.sensor.type) {
                 Sensor.TYPE_GRAVITY -> g_sensor.text =
                     getString(R.string.gravity, event.values[0], event.values[1], event.values[2])
@@ -28,10 +40,10 @@ class MainActivity : AppCompatActivity() {
                 Sensor.TYPE_GYROSCOPE -> gy_sensor.text =
                     getString(R.string.gyroscope, event.values[0], event.values[1], event.values[2])
             }
+            updateSensorCounter(event.sensor.type)
         }
 
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-            Log.i("jeff", "onAccuracyChanged sensor=" + sensor.name + ",accuracy=" + accuracy)
             when (sensor.type) {
                 Sensor.TYPE_GRAVITY -> dis.text =
                     getString(R.string.gravity_sensor,  sensor.name , accuracy)
@@ -43,6 +55,10 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.gyroscope_sensor, sensor.name, accuracy)
             }
         }
+    }
+
+    private fun printFrequence (amount: UInt, timeMillis: Long): String {
+        return "%.2f /s".format((amount.toLong() * 1000f) / timeMillis)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +73,24 @@ class MainActivity : AppCompatActivity() {
             )
         }
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        lifecycleScope.launchWhenResumed {
+           while (NonCancellable.isActive) {
+                val difference = lastUpdate.run {
+                    lastUpdate = System.currentTimeMillis()
+                    lastUpdate - this
+                }
+                sensorCounterMap.forEach{ (key, value) ->
+                    when(key) {
+                        Sensor.TYPE_GRAVITY -> gravity_rate.text = printFrequence(value, difference)
+                        Sensor.TYPE_ACCELEROMETER -> accel_rate.text = printFrequence(value, difference)
+                        Sensor.TYPE_GYROSCOPE -> gyro_rate.text = printFrequence(value, difference)
+                        Sensor.TYPE_ORIENTATION -> orientation_rate.text = printFrequence(value, difference)
+                    }
+                    sensorCounterMap[key] = 0u
+                }
+                delay(1000)
+           }
+        }
     }
 
     override fun onResume() {

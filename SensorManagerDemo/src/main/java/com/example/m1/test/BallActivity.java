@@ -12,7 +12,7 @@ public class BallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ball);
 
-        ball = (Ball) findViewById(R.id.ball);
+        ball = findViewById(R.id.ball);
     }
 
     @Override
